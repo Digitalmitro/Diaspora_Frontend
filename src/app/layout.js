@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       >
         <Navbar />
 
-        <main className="flex-grow ">
+        <main className="flex-grow pb-10">
           {" "}
           {/* Add padding here */}
           {children}
