@@ -1,103 +1,224 @@
+import React from "react";
+import banner from "../../public/homeBanner.png";
+import blog1 from "../../public/blog1.png";
+import blog2 from "../../public/blog2.png";
+import blog3 from "../../public/blog3.png";
+import icon1 from "../../public/Amsterdam-colored.png";
+import icon2 from "../../public/colorado-colored.png";
+import icon3 from "../../public/theo-colored.png";
+import icon4 from "../../public/Ararat-colored.png";
+import icon5 from "../../public/Nairobi-colored.png";
+import icon6 from "../../public/New York-colored.png";
+import icon7 from "../../public/lux-colored.png";
+import svg1 from "../../public/briefcase.svg";
+import svg2 from "../../public/code.svg";
+import svg3 from "../../public/settings.svg";
+import svg4 from "../../public/hand-shake.svg";
 import Image from "next/image";
+import { FiSearch, FiMapPin } from "react-icons/fi";
+import { FaUser, FaCalendarAlt } from "react-icons/fa";
+import Link from "next/link";
+const blogData = [
+  {
+    id: 1,
+    image: blog1,
+    author: "Andrew Lawson",
+    date: "Feb 12, 2024",
+    title: "The Internet Is A Job Seeker Most Crucial Success",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+    link: "/blog/the-internet-is-a-job-seeker",
+  },
+  {
+    id: 2,
+    image: blog2,
+    author: "Espinoza Lara",
+    date: "Feb 12, 2024",
+    title: "We’ve Weeded Through Hundreds Of Job Hunting",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+    link: "/blog/we-ve-weeded-through-job-hunting",
+  },
+  {
+    id: 3,
+    image: blog3,
+    author: "Adonay Porras",
+    date: "Feb 12, 2024",
+    title: "Today From Connecting With Potential Employers",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+    link: "/blog/today-from-connecting-with-employers",
+  },
+];
 
-export default function Home() {
+const icons = [
+  { image: icon1 },
+  { image: icon2 },
+  { image: icon3 },
+  { image: icon4 },
+  { image: icon5 },
+  { image: icon6 },
+  { image: icon7 },
+];
+
+function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
+        <Image src={banner} alt="Home Banner" layout="fill" objectFit="cover" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="absolute inset-0 bg-opacity-50"></div>
+
+        <div className="relative z-10 w-full max-w-4xl text-center px-4">
+          <div className="bg-white shadow-md  flex items-center p-2 mb-6">
+            <div className="relative flex-1">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 " />
+              <input
+                type="text"
+                placeholder="Job Title, Keywords, or Company"
+                className="w-full pl-10 pr-3 py-2 text-sm font-medium tracking-wide uppercase outline-none text-gray-700"
+              />
+            </div>
+
+            <div className="relative flex-1 border-l">
+              <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 " />
+              <input
+                type="text"
+                placeholder="City, State, Zip Code, or 'Remote'"
+                className="w-full pl-10 pr-3 py-2 text-sm uppercase font-medium tracking-wide outline-none text-gray-700"
+              />
+            </div>
+
+            <button className="bg-yellow-500 text-white px-6 py-2 uppercase text-sm font-medium tracking-wide hover:bg-yellow-600">
+              Find Jobs
+            </button>
+          </div>
+
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-snug">
+            Find Your Career <br /> To Make A Better Life
+          </h1>
+
+          <button className="bg-yellow-500 text-white px-6 py-3 uppercase font-semibold hover:bg-yellow-600">
+            Find Jobs
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </section>
+      <section className="py-12">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          {/* Heading */}
+          <h2 className="text-3xl font-bold text-[#1F2E4A] mb-4">
+            Most Demanded Job Categories
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt.
+          </p>
+
+          {/* Categories Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {/* Card 1 */}
+            <div className="bg-white border p-6 flex flex-col items-center hover:shadow-lg transition">
+              <Image src={svg1} alt="IT & Software" width={60} height={60} />
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">
+                CORPORATE JOBS (25)
+              </h3>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white border p-6 flex flex-col items-center hover:shadow-lg transition">
+              <Image src={svg2} alt="Healthcare" width={60} height={60} />
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">
+                Development (25)
+              </h3>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white border p-6 flex flex-col items-center hover:shadow-lg transition">
+              <Image src={svg3} alt="Finance" width={60} height={60} />
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">
+                Information IT (25)
+              </h3>
+            </div>
+
+            {/* Card 4 */}
+            <div className="bg-white border p-6 flex flex-col items-center hover:shadow-lg transition">
+              <Image src={svg4} alt="Marketing" width={60} height={60} />
+              <h3 className="mt-4 text-lg font-semibold text-gray-800">
+                Business Policy (25)
+              </h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 py-12">
+        <h3 className="text-3xl text-center  font-bold text-[#1F2E4A] mb-4">
+          Read Our Article To Get Tricks
+        </h3>
+        <p className="text-gray-600 text-center  mb-6">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 py-6">
+          {blogData.map((blog) => (
+            <article key={blog.id} className="  overflow-hidden bg-white">
+              <div className="relative w-full h-64">
+                <Image
+                  src={blog.image}
+                  alt={blog.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="py-4">
+                <div className="flex  gap-4  text-sm mb-2">
+                  <span className="flex items-center gap-1">
+                    <FaUser /> {blog.author}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <FaCalendarAlt /> {blog.date}
+                  </span>
+                </div>
+                <h2 className="text-lg font-semibold mb-2">{blog.title}</h2>
+                <p className="text-sm ">{blog.description}</p>
+                <Link
+                  href={blog.link}
+                  className=" font-medium tracking-wider text-sm hover:underline"
+                >
+                  Read More
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+<section className="py-6 bg-[#0000003D]">
+  <div className="max-w-7xl mx-auto text-center">
+    {/* Title */}
+    <h3 className="text-2xl font-semibold text-[#1F2E4A] mb-6">Our Partners</h3>
+
+    {/* Icons */}
+    <div className="flex flex-wrap justify-center gap-6">
+      {icons.map((icon,index) => (
+        <div
+          key={index}
+          className="relative w-32 shadow-lg h-32 rounded-full bg-white flex items-center justify-center"
         >
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src={icon.image}
+            alt={icon.image}
+            fill
+            className="object-contain p-6"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+      ))}
     </div>
+  </div>
+</section>
+
+    </>
   );
 }
+
+export default HomePage;

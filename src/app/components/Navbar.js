@@ -14,7 +14,7 @@ const languages = [
 ];
 
 const navLinks = [
-  { href: "/home", label: "Home" },
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/subscription", label: "Subscription" },
