@@ -59,7 +59,7 @@ function About() {
       <section className="bg-gray-50 ">
         <div className="flex justify-center w-full mx-auto px-4 ">
           <figure className="text-center">
-            <div className="relative  w-full rounded-full p-6 border overflow-hidden ">
+            <div className="relative  w-full rounded-full p-6 border overflow-hidden">
               <Image
                 src={image}
                 alt="Our team working together"

@@ -1,4 +1,3 @@
-import React from "react";
 import banner from "../../public/homeBanner.png";
 import blog1 from "../../public/blog1.png";
 import blog2 from "../../public/blog2.png";
@@ -14,6 +13,13 @@ import svg1 from "../../public/briefcase.svg";
 import svg2 from "../../public/code.svg";
 import svg3 from "../../public/settings.svg";
 import svg4 from "../../public/hand-shake.svg";
+import feature1 from "../../public/feature1.png";
+import feature2 from "../../public/feature2.png";
+import feature3 from "../../public/feature3.png";
+import feature4 from "../../public/feature4.png";
+import feature5 from "../../public/feature5.png";
+import feature6 from "../../public/feature6.png";
+import feature7 from "../../public/feature7.png";
 import Image from "next/image";
 import { FiSearch, FiMapPin } from "react-icons/fi";
 import { FaUser, FaCalendarAlt } from "react-icons/fa";
@@ -61,6 +67,57 @@ const icons = [
   { image: icon7 },
 ];
 
+const featured = [
+  {
+    companyLogo: feature1,
+    jobTitle: "Technical Database Engineer",
+    companyName: "Database Management Company",
+    jobType: "Full Time",
+    location: "Newyork",
+    applyButton: "APPLY NOW",
+  },
+  {
+    companyLogo: feature2,
+    jobTitle: "Technical Database Engineer",
+    companyName: "Database Management Company",
+    jobType: "Full Time",
+    location: "Newyork",
+    applyButton: "APPLY NOW",
+  },
+  {
+    companyLogo: feature3,
+    jobTitle: "Technical Database Engineer",
+    companyName: "Database Management Company",
+    jobType: "Full Time",
+    location: "Newyork",
+    applyButton: "APPLY NOW",
+  },
+  {
+    companyLogo: feature4,
+    jobTitle: "Technical Database Engineer",
+    companyName: "Database Management Company",
+    jobType: "Full Time",
+    location: "Newyork",
+    applyButton: "APPLY NOW",
+  },
+  {
+    companyLogo: feature5,
+    jobTitle: "Technical Database Engineer",
+    companyName: "Database Management Company",
+    jobType: "Full Time",
+    location: "Newyork",
+    applyButton: "APPLY NOW",
+  },
+  {
+    companyLogo: feature6,
+    jobTitle: "Technical Database Engineer",
+    companyName: "Database Management Company",
+    jobType: "Full Time",
+    location: "Newyork",
+    applyButton: "APPLY NOW",
+  },
+];
+
 function HomePage() {
   return (
     <>
@@ -103,6 +160,7 @@ function HomePage() {
           </button>
         </div>
       </section>
+
       <section className="py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           {/* Heading */}
@@ -193,30 +251,92 @@ function HomePage() {
         </div>
       </section>
 
-<section className="py-6 bg-[#0000003D]">
-  <div className="max-w-7xl mx-auto text-center">
-    {/* Title */}
-    <h3 className="text-2xl font-semibold text-[#1F2E4A] mb-6">Our Partners</h3>
+      <section className="py-8 bg-[#0000003D]">
+        <div className="max-w-7xl mx-auto text-center">
+          {/* Title */}
+          <h3 className="text-2xl font-semibold text-[#1F2E4A] mb-6">
+            Our Partners
+          </h3>
 
-    {/* Icons */}
-    <div className="flex flex-wrap justify-center gap-6">
-      {icons.map((icon,index) => (
-        <div
-          key={index}
-          className="relative w-32 shadow-lg h-32 rounded-full bg-white flex items-center justify-center"
-        >
-          <Image
-            src={icon.image}
-            alt={icon.image}
-            fill
-            className="object-contain p-6"
-          />
+          {/* Icons */}
+          <div className="flex flex-wrap justify-center gap-6">
+            {icons.map((icon, index) => (
+              <div
+                key={index}
+                className="relative w-32 shadow-lg h-32 rounded-full bg-white flex items-center justify-center"
+              >
+                <Image
+                  src={icon.image}
+                  alt={icon.image}
+                  fill
+                  className="object-contain p-6"
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
+      <section className="py-16">
+        <p className="text-gray-600 text-center  ">Here You Can See</p>
+        <h2 className="text-3xl text-center  font-bold text-[#1F2E4A] mb-4">
+          Featured Jobs
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+          {featured.map((job, index) => (
+            <div
+              key={index}
+              className="flex flex-col md:flex-row items-center md:justify-evenly p-6  bg-white"
+            >
+              {/* Left Side: Logo + Details */}
+              <div className="flex items-center gap-4">
+                <Image
+                  src={job.companyLogo}
+                  alt={job.companyName}
+                  className="w-16 h-16 object-contain"
+                />
+                <div>
+                  <h2 className="text-lg font-semibold">{job.jobTitle}</h2>
+                  <p className="text-gray-500">{job.companyName}</p>
+                  <p className="text-green-600 font-medium">
+                    {job.jobType} - {job.location}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Side: Apply Button */}
+              <button className="bg-yellow-400 text-white text-sm font-semibold px-4 py-2  hover:bg-yellow-500 transition">
+                {job.applyButton}
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="relative h-[500px]  mx-2 md:mx-12 flex items-center justify-center overflow-hidden">
+        <Image
+          src={feature7}
+          alt="Home Banner"
+          layout="fill"
+          objectFit="cover"
+        />
+
+        <div className="absolute inset-0 bg-opacity-50"></div>
+
+        <div className="relative z-10 w-full max-w-4xl text-center px-4">
+          <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-snug">
+            2025 CAREERS IN AFRICA SUMMITS
+          </h3>
+          <p className="text-xl text-white mb-6 max-w-2xl mx-auto">
+            Our world-class Recruitment Summits are back for 2025 across Europe,
+            The U.S. and Africa! Click below for more information.
+          </p>
+
+          <button className="bg-yellow-500 text-white px-6 py-3 uppercase font-semibold hover:bg-yellow-600">
+            learn more
+          </button>
+        </div>
+      </section>
     </>
   );
 }
