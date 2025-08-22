@@ -1,5 +1,5 @@
 import React from 'react'
-import banner from "../../../public/terms.png";
+import banner from "../../../../public/terms.png";
 import Image from 'next/image';
 function TermsAndConditions() {
   return (

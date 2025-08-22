@@ -1,5 +1,5 @@
 import Image from "next/image";
-import banner from "../../../public/terms.png";
+import banner from "../../../../public/terms.png";
 
 function PrivacyPolicy() {
   return (

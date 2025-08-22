@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import banner from "../../../public/about.png";
-import image from "../../../public/aboutImage.png";
+import banner from "../../../../public/about.png";
+import image from "../../../../public/aboutImage.png";
 
 function About() {
   return (
