@@ -5,6 +5,10 @@ import back from "../../../public/back.png";
 import { useRouter } from "next/navigation";
 function Login() {
   const router = useRouter();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    router.push('/jobPosting');
+  };
   return (
     <main>
       <section
@@ -34,7 +38,7 @@ function Login() {
 
             <h2 className="text-2xl font-semibold mb-4 ">Employee Portal</h2>
             <div className="border bg-[#EDEDED] p-8 w-full max-w-md text-center">
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <input
                   type="email"
                   placeholder="Company Email"
@@ -50,6 +54,7 @@ function Login() {
                 <button
                   type="submit"
                   className="px-6 py-3 bg-yellow-500 text-white font-bold hover:bg-yellow-600 transition"
+                  onClick={() => router.push("/jobPosting")}
                 >
                   LOGIN
                 </button>

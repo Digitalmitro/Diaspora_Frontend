@@ -77,7 +77,7 @@ function Footer() {
             <h2 className="font-bold text-xl mb-6 tracking-wide">Careers in Africa</h2>
             <ul className="space-y-3">
               <li className="hover:text-blue-200 transition-colors">
-                <Link href="#">About</Link>
+                <Link href="/about">About</Link>
               </li>
               <li className="hover:text-blue-200 transition-colors">
                 <Link href="#">Countries</Link>
@@ -103,7 +103,7 @@ function Footer() {
                 <Link href="#">FAQ</Link>
               </li>
               <li className="hover:text-blue-200 transition-colors">
-                <Link href="#">Contact Us</Link>
+                <Link href="/contact  ">Contact Us</Link>
               </li>
               <li className="hover:text-blue-200 transition-colors">
                 <Link href="#">Facebook</Link>

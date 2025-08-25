@@ -5,6 +5,10 @@ import back from "../../../public/back.png";
 import { useRouter } from "next/navigation";
 function SignUp() {
   const router = useRouter();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    router.push("/jobPosting");
+  };
   return (
     <main>
       <section
@@ -37,7 +41,7 @@ function SignUp() {
 
             <h2 className="text-2xl font-semibold mb-4 ">Employee Portal</h2>
             <div className="border bg-[#EDEDED] p-8 w-full max-w-md text-center">
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <input
                   type="email"
                   placeholder="Company Email"

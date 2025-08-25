@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import banner from "../../../public/employers.png";
 import logo from "../../../public/logo.png.png";
@@ -27,7 +27,10 @@ function Employers() {
         <div className="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
           <div className="  p-8 w-full max-w-md text-center">
             <div className="absolute top-6 left-6">
-              <button className="flex flex-col font-bold items-center text-sm text-gray-700 hover:text-black" onClick={() => router.back()}>
+              <button
+                className="flex flex-col font-bold items-center text-sm text-gray-700 hover:text-black"
+                onClick={() => router.back()}
+              >
                 <span className="mr-2">
                   <Image src={back} alt="Back" width={30} height={30} />
                 </span>{" "}
@@ -42,11 +45,17 @@ function Employers() {
               </div>
 
               <div className="space-y-4">
-                <button className="w-full py-3 px-4 border font-medium flex items-center justify-center gap-2" onClick={() => router.push("/login")}>
+                <button
+                  className="w-full py-3 px-4 border font-medium flex items-center justify-center gap-2"
+                  onClick={() => router.push("/login")}
+                >
                   <IoPerson className="text-lg" />
                   LOGIN
                 </button>
-                <button className="w-full py-3 px-4 border font-medium flex items-center justify-center gap-2" onClick={() => router.push("/signup")}>
+                <button
+                  className="w-full py-3 px-4 border font-medium flex items-center justify-center gap-2"
+                  onClick={() => router.push("/signup")}
+                >
                   <BsFillPenFill className="text-lg" />
                   SIGN UP
                 </button>
