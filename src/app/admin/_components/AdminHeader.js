@@ -3,7 +3,7 @@ import { FiSearch } from "react-icons/fi";
 import feature2 from "../../../../public/feature2.png";
 function AdminHeader() {
   return (
-    <div className="flex py-6 flex-wrap justify-between md:justify-evenly items-center gap-4 p-2">
+    <div className="flex pt-10 md:py-6 flex-wrap justify-between md:justify-evenly items-center gap-4 p-2">
       
       {/* Search Box */}
       <div className="flex items-center justify-between p-2 border bg-[#F0F0F0C7] w-full sm:w-72 md:w-96">
