@@ -10,10 +10,11 @@ import {
 } from "react-icons/fa6";
 import { FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
+import { useAuth } from "@/app/context/authContext";
 
 function AdminSidebar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const {logout }=useAuth();
   const handleClose = () => setIsOpen(false);
 
   return (
@@ -58,6 +59,9 @@ function AdminSidebar() {
           </li>
           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
             <Link href="/admin/cms" onClick={handleClose}>CMS</Link>
+          </li>
+           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
+            <Link href="/admin" onClick={() => logout()}>Logout</Link>
           </li>
         </ul>
 

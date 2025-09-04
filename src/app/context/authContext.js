@@ -40,8 +40,6 @@ export const AuthProvider = ({ children }) => {
 
   // Login request
   const login = async (email, password) => {
-
-
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
         method: "POST",
@@ -65,7 +63,7 @@ export const AuthProvider = ({ children }) => {
   // Signup request
   const signup = async (name, email, password, role) => {
     try {
-      const res = await fetch(`${process.env.BACKEND_URL}/auth/signup`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, role }),

@@ -3,11 +3,29 @@ import Image from "next/image";
 import banner from "../../../public/employers.png";
 import back from "../../../public/back.png";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/authContext";
+import { useState } from "react";
 function SignUp() {
   const router = useRouter();
-  const handleSubmit = (e) => {
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+  });
+  const [error, setError] = useState("");
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+  const { signup } = useAuth();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    router.push("/jobPosting");
+    try {
+      await signup(user.name, user.email, user.password, user.role);
+      router.push("/");
+    } catch (err) {
+      setError(err.message);
+    }
   };
   return (
     <main>
@@ -26,7 +44,7 @@ function SignUp() {
 
         {/* Overlay */}
         <div className="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
-          <div className="  p-8 w-full max-w-md text-center">
+          <div className="p-8 w-full max-w-md text-center">
             <div className="absolute top-6 left-6">
               <button
                 className="flex flex-col font-bold items-center text-sm text-gray-700 hover:text-black"
@@ -39,26 +57,56 @@ function SignUp() {
               </button>
             </div>
 
-            <h2 className="text-2xl font-semibold mb-4 ">Employee Portal</h2>
+            <h2 className="text-2xl font-semibold mb-4">Employee Portal</h2>
             <div className="border bg-[#EDEDED] p-8 w-full max-w-md text-center">
               <form className="space-y-4" onSubmit={handleSubmit}>
+                {error && (
+                  <p className="text-red-500 font-medium">{error}</p> // ✅ Show error here
+                )}
+                {/* Name */}
+                <input
+                  type="text"
+                  name="name"
+                  value={user.name}
+                  onChange={handleChange}
+                  placeholder="Full Name"
+                  className="w-full px-4 py-3 border bg-white text-center font-medium focus:outline-none"
+                />
+
+                {/* Email */}
                 <input
                   type="email"
+                  name="email"
+                  value={user.email}
+                  onChange={handleChange}
                   placeholder="Company Email"
-                  className="w-full px-4 py-3 border bg-white text-center font-medium focus:outline-none "
+                  className="w-full px-4 py-3 border bg-white text-center font-medium focus:outline-none"
                 />
 
+                {/* Password */}
                 <input
                   type="password"
+                  name="password"
+                  value={user.password}
+                  onChange={handleChange}
                   placeholder="Password"
-                  className="w-full px-4 py-3 border text-center bg-white font-medium focus:outline-none "
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  className="w-full px-4 py-3 border text-center bg-white font-medium focus:outline-none "
+                  className="w-full px-4 py-3 border bg-white text-center font-medium focus:outline-none"
                 />
 
+                {/* Role (enum dropdown) */}
+                <select
+                  name="role"
+                  value={user.role}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border bg-white text-center font-medium focus:outline-none"
+                >
+                  <option value="">Select Role</option>
+                  <option value="seeker">seeker</option>
+                  <option value="employer">Employer</option>
+                  <option value="admin">Admin</option>
+                </select>
+
+                {/* Submit Button */}
                 <button
                   type="submit"
                   className="px-6 py-3 bg-yellow-500 text-white font-bold hover:bg-yellow-600 transition"

@@ -3,11 +3,24 @@ import Image from "next/image";
 import banner from "../../../public/employers.png";
 import back from "../../../public/back.png";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/authContext";
+import { useState } from "react";
 function Login() {
   const router = useRouter();
-  const handleSubmit = (e) => {
+  const [user,setUser]=useState({
+    email:"",
+    password:""
+  });
+    const [error, setError] = useState(""); 
+  const {login}=useAuth();
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    router.push('/jobPosting');
+    try {
+      await login(user.email, user.password);
+      router.push('/');
+    } catch (err) {
+      setError(err.message);
+    }
   };
   return (
     <main>
@@ -39,22 +52,29 @@ function Login() {
             <h2 className="text-2xl font-semibold mb-4 ">Employee Portal</h2>
             <div className="border bg-[#EDEDED] p-8 w-full max-w-md text-center">
               <form className="space-y-4" onSubmit={handleSubmit}>
+                  {error && (
+                  <p className="text-red-500 font-medium">{error}</p> // ✅ Show error here
+                )}
                 <input
                   type="email"
                   placeholder="Company Email"
+                  value={user.email}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
                   className="w-full px-4 py-3 border bg-white text-center font-medium focus:outline-none "
                 />
 
                 <input
                   type="password"
                   placeholder="Password"
+                  value={user.password}
+                  onChange={(e) => setUser({ ...user, password: e.target.value })}
                   className="w-full px-4 py-3 border text-center bg-white font-medium focus:outline-none "
                 />
 
                 <button
                   type="submit"
                   className="px-6 py-3 bg-yellow-500 text-white font-bold hover:bg-yellow-600 transition"
-                  onClick={() => router.push("/jobPosting")}
+                  // onClick={() => router.push("/jobPosting")}
                 >
                   LOGIN
                 </button>

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../context/authContext.js";
+import { useAuth } from "@/app/context/authContext";
 
 const AdminLoginForm = () => {
   const [email, setEmail] = useState("");

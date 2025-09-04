@@ -7,6 +7,7 @@ import { GiIndiaGate } from "react-icons/gi";
 import { usePathname, useRouter } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import logo from "../../../../public/logo.png.png";
+import { useAuth } from "@/app/context/authContext";
 const languages = [
   {
     code: "en",
@@ -32,6 +33,7 @@ const navLinks = [
 
 function Navbar() {
   const [selected, setSelected] = useState(languages[0]);
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -100,12 +102,36 @@ function Navbar() {
 
             {/* Buttons */}
             <div className="flex space-x-4 ml-4">
-              <button className="px-4 py-2 font-semibold text-sm bg-[#F4B400] text-white rounded" onClick={() => router.push("/employers")}>
-                EMPLOYERS
-              </button>
-              <button className="px-4 py-2 font-semibold text-sm bg-[#F4B400] text-white rounded" onClick={() => router.push("/candidates")}>
-                CANDIDATES
-              </button>
+              {/* If employer → show EMPLOYERS + CANDIDATES buttons */}
+              {user && (user.role === "admin" || user.role === "employer") && (
+                <>
+                  <button
+                    className="px-4 py-2 font-semibold text-sm bg-[#F4B400] text-white rounded"
+                    onClick={() => router.push("/jobPosting")}
+                  >
+                    EMPLOYERS
+                  </button>
+                  <button
+                    className="px-4 py-2 font-semibold text-sm bg-[#F4B400] text-white rounded"
+                    onClick={() => router.push("/candidates")}
+                  >
+                    CANDIDATES
+                  </button>
+                </>
+              )}
+
+              {/* If NO user → show Login / Signup */}
+              {!user && (
+                <button
+                    className="px-4 py-2 font-semibold text-sm bg-[#F4B400] text-white rounded"
+                    onClick={() => router.push("/employers")}
+                  >
+                    LOGIN / SIGNUP
+                  </button>
+              )}
+
+              {/* If user exists but is "admin" or "user" → show nothing */}
+              {user?.role=="user" && null}
             </div>
           </div>
 
