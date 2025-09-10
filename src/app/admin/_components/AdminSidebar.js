@@ -14,7 +14,7 @@ import { useAuth } from "@/app/context/authContext";
 
 function AdminSidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  const {logout }=useAuth();
+  const { logout } = useAuth();
   const handleClose = () => setIsOpen(false);
 
   return (
@@ -46,22 +46,34 @@ function AdminSidebar() {
         {/* Menu */}
         <ul className="space-y-6 py-20 md:py-6 text-black font-medium">
           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
-            <Link href="/admin" onClick={handleClose}>Dashboard</Link>
+            <Link href="/admin" onClick={handleClose}>
+              Dashboard
+            </Link>
           </li>
           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
-            <Link href="/admin/users" onClick={handleClose}>User Management</Link>
+            <Link href="/admin/users" onClick={handleClose}>
+              User Management
+            </Link>
           </li>
           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
-            <Link href="/admin/job-approval" onClick={handleClose}>Job Approval</Link>
+            <Link href="/admin/job-approval" onClick={handleClose}>
+              Job Approval
+            </Link>
           </li>
           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
-            <Link href="/admin/payment" onClick={handleClose}>Payment</Link>
+            <Link href="/admin/payment" onClick={handleClose}>
+              Payment
+            </Link>
           </li>
           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
-            <Link href="/admin/cms" onClick={handleClose}>CMS</Link>
+            <Link href="/admin/cms" onClick={handleClose}>
+              CMS
+            </Link>
           </li>
-           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
-            <Link href="/admin" onClick={() => logout()}>Logout</Link>
+          <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
+            <Link href="/admin" onClick={() => logout()}>
+              Logout
+            </Link>
           </li>
         </ul>
 

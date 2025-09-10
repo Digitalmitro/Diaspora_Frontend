@@ -1,5 +1,9 @@
 "use client";
 import { useState } from "react";
+import AboutPage from "./components/AboutPage";
+import PrivacyPolicyPage from "./components/PrivacyPolicyPage";
+import TermsPage from "./components/TermsPage";
+import HomePage from "./components/HomePage";
 
 function CMS() {
   const [activePage, setActivePage] = useState(1);
@@ -8,6 +12,29 @@ function CMS() {
     content: "",
     banner: null,
     secondaryImage: null,
+    home: {
+      bannerSection: {
+        bannerImage: null,
+        title: ""
+      },
+      jobCategorySection: {
+        title: "",
+        description: ""
+      },
+      blogSection: {
+        title: "",
+        description: ""
+      },
+      jobsSection: {
+        title: "",
+        description: ""
+      },
+      secondBannerSection: {
+        bannerImage: null,
+        title: "",
+        description: ""
+      }
+    }
   });
 
   const pageSlugs = {
@@ -17,39 +44,80 @@ function CMS() {
     4: "home",
   };
 
-  const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.files[0],
-    });
+  const handleFileChange = (e, section = null, field = null) => {
+    if (section && field) {
+      // For nested home page fields
+      setFormData(prev => ({
+        ...prev,
+        home: {
+          ...prev.home,
+          [section]: {
+            ...prev.home[section],
+            [field]: e.target.files[0]
+          }
+        }
+      }));
+    } else {
+      // For regular fields
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.files[0],
+      });
+    }
   };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (e, section = null, field = null) => {
+    if (section && field) {
+      // For nested home page fields
+      setFormData(prev => ({
+        ...prev,
+        home: {
+          ...prev.home,
+          [section]: {
+            ...prev.home[section],
+            [field]: e.target.value
+          }
+        }
+      }));
+    } else {
+      // For regular fields
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = async () => {
-    console.log("first", formData);
     const slug = pageSlugs[activePage];
 
-    // Build FormData
+    // Build FormData according to your schema
     const formDataToSend = new FormData();
     formDataToSend.append("slug", slug);
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("content", formData.content);
-
-    if (formData.banner) {
-      formDataToSend.append("banner", formData.banner); // File object
-    }
-
-    if (formData.secondaryImage) {
-      formDataToSend.append("secondaryImage", formData.secondaryImage); // File object
-    }
-    for (let [key, value] of formDataToSend.entries()) {
-      console.log(key, value);
+    
+    if (slug === "home") {
+      // Home page has a different structure
+      Object.entries(formData.home).forEach(([section, fields]) => {
+        Object.entries(fields).forEach(([key, value]) => {
+          if (value instanceof File) {
+            formDataToSend.append(`home[${section}][${key}]`, value);
+          } else if (value) {
+            formDataToSend.append(`home[${section}][${key}]`, value);
+          }
+        });
+      });
+    } else {
+      // Other pages
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("content", formData.content);
+      
+      if (formData.banner) {
+        formDataToSend.append("banner", formData.banner);
+      }
+      
+      if (formData.secondaryImage) {
+        formDataToSend.append("secondaryImage", formData.secondaryImage);
+      }
     }
 
     try {
@@ -58,10 +126,45 @@ function CMS() {
         body: formDataToSend,
       });
 
-      const data = await res.json();
-      console.log("Response:", data);
+      if(res.ok) {
+        const data = await res.json();
+        console.log("Response:", data);
+        alert("Page updated successfully!");
+        setFormData({
+          title: "",
+          content: "",
+          banner: null,
+          secondaryImage: null,
+          home: {
+            bannerSection: {
+              bannerImage: null,
+              title: ""
+            },
+            jobCategorySection: {
+              title: "",
+              description: ""
+            },
+            blogSection: {
+              title: "",
+              description: ""
+            },
+            jobsSection: {
+              title: "",
+              description: ""
+            },
+            secondBannerSection: {
+              bannerImage: null,
+              title: "",
+              description: ""
+            }
+          }
+        });
+      } else {
+        alert("Failed to update page. Please try again.");
+      }
     } catch (err) {
       console.error("Error:", err);
+      alert("Error updating page. Please try again.");
     }
   };
 
@@ -69,200 +172,39 @@ function CMS() {
     switch (activePage) {
       case 1:
         return (
-          <div className="p-4 space-y-4">
-            <h2 className="text-xl font-semibold">About Us</h2>
-            <textarea
-              name="content"
-              placeholder="Type your content here"
-              className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
-              rows="4"
-              value={formData.content}
-              onChange={handleChange}
-            />
-            <div>
-              <p className="mb-2 font-medium">Upload Banner Image</p>
-              <input
-                type="file"
-                name="banner"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="w-full p-2 border rounded-lg bg-[#0B2447] text-white"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <p className="mb-2 font-medium">Upload Secondary Image</p>
-                <input
-                  type="file"
-                  name="secondaryImage"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="w-full p-2 border rounded-lg bg-[#0B2447] text-white"
-                />
-              </div>
-
-              <div>
-                <p className="mb-2 font-medium">Change the Title Here</p>
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Change Title Here"
-                  className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
-                  value={formData.title}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <button
-            type="button"
-              onClick={handleSubmit}
-              className="bg-yellow-500 px-6 py-2 rounded-lg font-medium text-white w-full sm:w-auto"
-            >
-              Submit
-            </button>
-          </div>
+          <AboutPage
+            formData={formData}
+            handleChange={handleChange}
+            handleFileChange={handleFileChange}
+            handleSubmit={handleSubmit}
+          />
         );
       case 2:
         return (
-          <div className="p-4 space-y-4">
-            <h2 className="text-xl font-semibold">Privacy Policy</h2>
-            <textarea
-              placeholder="Type your content here"
-              className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
-              rows="4"
-            />
-            <div>
-              <p className="mb-2 font-medium">Upload Banner Image</p>
-              <div className="w-full h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white cursor-pointer">
-                Upload
-              </div>
-            </div>
-            <div>
-              <p className="mb-2 font-medium">Change the Title Here</p>
-              <input
-                type="text"
-                placeholder="Change Title Here"
-                className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
-              />
-            </div>
-            <button className="bg-yellow-500 px-6 py-2 rounded-lg font-medium text-white w-full sm:w-auto">
-              Submit
-            </button>
-          </div>
+          <PrivacyPolicyPage
+            formData={formData}
+            handleChange={handleChange}
+            handleFileChange={handleFileChange}
+            handleSubmit={handleSubmit}
+          />
         );
       case 3:
         return (
-          <div className="p-4 space-y-4">
-            <h2 className="text-xl font-semibold">Terms & Conditions</h2>
-            <textarea
-              placeholder="Type your content here"
-              className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
-              rows="4"
-            />
-            <div>
-              <p className="mb-2 font-medium">Upload Banner Image</p>
-              <div className="w-full h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white cursor-pointer">
-                Upload
-              </div>
-            </div>
-            <div>
-              <p className="mb-2 font-medium">Change the Title Here</p>
-              <input
-                type="text"
-                placeholder="Change Title Here"
-                className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
-              />
-            </div>
-            <button className="bg-yellow-500 px-6 py-2 rounded-lg font-medium text-white w-full sm:w-auto">
-              Submit
-            </button>
-          </div>
+          <TermsPage
+            formData={formData}
+            handleChange={handleChange}
+            handleFileChange={handleFileChange}
+            handleSubmit={handleSubmit}
+          />
         );
       case 4:
         return (
-          <div className="p-4 space-y-6">
-            <h2 className="text-xl font-semibold">Home Page</h2>
-
-            {/* Banner Section */}
-            <div>
-              <h3 className="text-lg font-medium mb-2">Banner Section</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white cursor-pointer">
-                  Upload Banner Image
-                </div>
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Title Here
-                </div>
-              </div>
-            </div>
-
-            {/* Job Category Section */}
-            <div>
-              <h3 className="text-lg font-medium mb-2">Job Category Section</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Title Here
-                </div>
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Description Here
-                </div>
-              </div>
-            </div>
-
-            {/* Blog Section */}
-            <div>
-              <h3 className="text-lg font-medium mb-2">Blog Section</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Title Here
-                </div>
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Description Here
-                </div>
-              </div>
-            </div>
-
-            {/* Jobs Section */}
-            <div>
-              <h3 className="text-lg font-medium mb-2">Jobs Section</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Title Here
-                </div>
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Title Here
-                </div>
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Description Here
-                </div>
-              </div>
-            </div>
-
-            {/* Second Banner Section */}
-            <div>
-              <h3 className="text-lg font-medium mb-2">
-                Second Banner Section
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Title Here
-                </div>
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white">
-                  Change the Description Here
-                </div>
-                <div className="h-24 flex items-center justify-center border rounded-lg bg-[#0B2447] text-white cursor-pointer">
-                  Upload Banner Image
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <div className="pt-4">
-              <button className="bg-yellow-500 px-6 py-2 rounded-lg font-medium text-white w-full sm:w-auto">
-                Submit
-              </button>
-            </div>
-          </div>
+          <HomePage
+            formData={formData}
+            handleChange={handleChange}
+            handleFileChange={handleFileChange}
+            handleSubmit={handleSubmit}
+          />
         );
       default:
         return null;
@@ -274,7 +216,7 @@ function CMS() {
       <div className="bg-white rounded-lg shadow-md">{renderContent()}</div>
 
       {/* Pagination */}
-      <div className="flex justify-center space-x-3 mt-6 flex-wrap">
+      <div className="flex justify-center gap-2 mt-6 flex-wrap">
         {[1, 2, 3, 4].map((num) => (
           <button
             key={num}
@@ -285,7 +227,10 @@ function CMS() {
                 : "bg-gray-200 text-gray-700"
             }`}
           >
-            {num}
+            {num === 1 && "About"}
+            {num === 2 && "Privacy"}
+            {num === 3 && "Terms"}
+            {num === 4 && "Home"}
           </button>
         ))}
       </div>
