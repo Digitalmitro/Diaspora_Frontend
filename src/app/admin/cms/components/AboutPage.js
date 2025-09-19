@@ -1,4 +1,52 @@
-export default function AboutPage({ formData, handleChange, handleFileChange, handleSubmit }) {
+import { useEffect } from "react";
+
+export default function AboutPage({
+  formData,
+  handleChange,
+  handleFileChange,
+  handleSubmit,
+  setFormData,
+  slug,
+}) {
+    useEffect(() => {
+    const fetchPage = async () => {
+      console.log("this is slug",slug);
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/cms/${slug}`
+        );
+         if (res.status === 404) {
+          console.warn("Page not found, resetting form data");
+          setFormData({
+            title: "",
+            content: "",
+            banner: null,
+            secondaryImage: null,
+          });
+          return;
+        }
+        if (res.ok) {
+          const data = await res.json();
+          console.log("Fetched page data:", data);
+          if(!data) {
+            return;
+          }
+
+          // directly set formData
+          setFormData((prev) => ({
+            ...prev,
+            title: data.title,
+            content: data.content,
+            bannerUrl: data.banner,
+          }));
+        }
+      } catch (err) {
+        console.error("Error fetching page:", err);
+      }
+    };
+
+    if (slug) fetchPage();
+  }, [slug]);
   return (
     <div className="p-4 space-y-4">
       <h2 className="text-xl font-semibold">About Us</h2>

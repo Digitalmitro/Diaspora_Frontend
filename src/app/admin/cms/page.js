@@ -43,7 +43,7 @@ function CMS() {
     3: "terms",
     4: "home",
   };
-
+const slug = pageSlugs[activePage];
   const handleFileChange = (e, section = null, field = null) => {
     if (section && field) {
       // For nested home page fields
@@ -177,6 +177,8 @@ function CMS() {
             handleChange={handleChange}
             handleFileChange={handleFileChange}
             handleSubmit={handleSubmit}
+            setFormData={setFormData}
+            slug={slug}
           />
         );
       case 2:
@@ -186,24 +188,30 @@ function CMS() {
             handleChange={handleChange}
             handleFileChange={handleFileChange}
             handleSubmit={handleSubmit}
+            setFormData={setFormData}
+            slug={slug}
           />
         );
       case 3:
         return (
           <TermsPage
             formData={formData}
+            setFormData={setFormData}
             handleChange={handleChange}
             handleFileChange={handleFileChange}
             handleSubmit={handleSubmit}
+            slug={slug}
           />
         );
       case 4:
         return (
           <HomePage
             formData={formData}
+            setFormData={setFormData}
             handleChange={handleChange}
             handleFileChange={handleFileChange}
             handleSubmit={handleSubmit}
+            slug={slug}
           />
         );
       default:

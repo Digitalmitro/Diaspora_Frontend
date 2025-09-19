@@ -1,8 +1,53 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function TermsPage({ formData, handleChange, handleFileChange, handleSubmit }) {
+export default function TermsPage({
+  formData,
+  handleChange,
+  handleFileChange,
+  handleSubmit,
+  slug,
+  setFormData,
+}) {
   const [submitting, setSubmitting] = useState(false);
+  useEffect(() => {
+    const fetchPage = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/cms/${slug}`
+        );
+        if (res.status === 404) {
+          console.warn("Page not found, resetting form data");
+          setFormData({
+            title: "",
+            content: "",
+            banner: null,
+          });
+          return;
+        }
+        if (res.ok) {
+          const data = await res.json();
+          console.log("Fetched page data:", data);
+           if (!data) {
+            return;
+          }
+
+          // directly set formData
+          setFormData((prev) => ({
+            ...prev,
+            title: data.title,
+            content: data.content,
+            bannerUrl: data.banner,
+          }));
+        }
+      } catch (err) {
+        console.error("Error fetching page:", err);
+      }
+    };
+
+    if (slug) fetchPage();
+  }, [slug]);
+
 
   const onSubmit = async () => {
     setSubmitting(true);
@@ -51,7 +96,11 @@ export default function TermsPage({ formData, handleChange, handleFileChange, ha
         onClick={onSubmit}
         disabled={submitting}
         className={`px-6 py-2 rounded-lg font-medium w-full sm:w-auto 
-          ${submitting ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 text-white"}
+          ${
+            submitting
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-yellow-500 text-white"
+          }
         `}
       >
         {submitting ? "Submitting..." : "Submit"}
