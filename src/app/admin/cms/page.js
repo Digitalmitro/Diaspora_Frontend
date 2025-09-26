@@ -15,26 +15,26 @@ function CMS() {
     home: {
       bannerSection: {
         bannerImage: null,
-        title: ""
+        title: "",
       },
       jobCategorySection: {
         title: "",
-        description: ""
+        description: "",
       },
       blogSection: {
         title: "",
-        description: ""
+        description: "",
       },
       jobsSection: {
         title: "",
-        description: ""
+        description: "",
       },
       secondBannerSection: {
         bannerImage: null,
         title: "",
-        description: ""
-      }
-    }
+        description: "",
+      },
+    },
   });
 
   const pageSlugs = {
@@ -43,19 +43,19 @@ function CMS() {
     3: "terms",
     4: "home",
   };
-const slug = pageSlugs[activePage];
+  const slug = pageSlugs[activePage];
   const handleFileChange = (e, section = null, field = null) => {
     if (section && field) {
       // For nested home page fields
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         home: {
           ...prev.home,
           [section]: {
             ...prev.home[section],
-            [field]: e.target.files[0]
-          }
-        }
+            [field]: e.target.files[0],
+          },
+        },
       }));
     } else {
       // For regular fields
@@ -69,15 +69,15 @@ const slug = pageSlugs[activePage];
   const handleChange = (e, section = null, field = null) => {
     if (section && field) {
       // For nested home page fields
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         home: {
           ...prev.home,
           [section]: {
             ...prev.home[section],
-            [field]: e.target.value
-          }
-        }
+            [field]: e.target.value,
+          },
+        },
       }));
     } else {
       // For regular fields
@@ -89,82 +89,79 @@ const slug = pageSlugs[activePage];
   };
 
   const handleSubmit = async () => {
-    const slug = pageSlugs[activePage];
+const slug = pageSlugs[activePage];
+  console.log("Slug:", slug); // Verify slug
+  console.log("FormData state:", formData); // Verify formData content
 
-    // Build FormData according to your schema
-    const formDataToSend = new FormData();
-    formDataToSend.append("slug", slug);
-    
-    if (slug === "home") {
-      // Home page has a different structure
-      Object.entries(formData.home).forEach(([section, fields]) => {
-        Object.entries(fields).forEach(([key, value]) => {
-          if (value instanceof File) {
-            formDataToSend.append(`home[${section}][${key}]`, value);
-          } else if (value) {
-            formDataToSend.append(`home[${section}][${key}]`, value);
-          }
-        });
+  const formDataToSend = new FormData();
+
+  // Always append slug and basic fields
+  formDataToSend.append("slug", slug);
+
+  if (slug === "home") {
+    console.log("Home page formData:", formData.home); // Debug home page data
+    Object.entries(formData.home).forEach(([section, fields]) => {
+      Object.entries(fields).forEach(([key, value]) => {
+        formDataToSend.append(`home[${section}][${key}]`, value || "");
       });
-    } else {
-      // Other pages
-      formDataToSend.append("title", formData.title);
-      formDataToSend.append("content", formData.content);
-      
-      if (formData.banner) {
-        formDataToSend.append("banner", formData.banner);
-      }
-      
-      if (formData.secondaryImage) {
-        formDataToSend.append("secondaryImage", formData.secondaryImage);
-      }
+    });
+  } else {
+    console.log("Non-home page formData:", formData); // Debug other pages
+    formDataToSend.append("title", formData.title || "");
+    formDataToSend.append("content", formData.content || "");
+
+    if (formData.banner) {
+      formDataToSend.append("banner", formData.banner);
     }
+    if (formData.secondaryImage) {
+      formDataToSend.append("secondaryImage", formData.secondaryImage);
+    }
+  }
+
+  // Debug FormData entries
+  console.log("FormData entries:");
+  for (let [key, value] of formDataToSend.entries()) {
+    console.log(`${key}: ${value instanceof File ? value.name : value}`);
+  }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cms`, {
-        method: "POST",
-        body: formDataToSend,
-      });
+      let res;
 
-      if(res.ok) {
+      console.log("form data to be send", formDataToSend);
+
+      if (formData._id) {
+        console.log("form id ", formData._id);
+        // UPDATE (PUT)
+        res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/cms/${slug}`,
+          {
+            method: "PUT",
+            body: formDataToSend, // Pass FormData directly, do not spread
+          }
+        );
+      } else {
+        // CREATE (POST)
+        res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cms`, {
+          method: "POST",
+          body: formDataToSend,
+        });
+      }
+
+      if (res.ok) {
         const data = await res.json();
         console.log("Response:", data);
-        alert("Page updated successfully!");
-        setFormData({
-          title: "",
-          content: "",
-          banner: null,
-          secondaryImage: null,
-          home: {
-            bannerSection: {
-              bannerImage: null,
-              title: ""
-            },
-            jobCategorySection: {
-              title: "",
-              description: ""
-            },
-            blogSection: {
-              title: "",
-              description: ""
-            },
-            jobsSection: {
-              title: "",
-              description: ""
-            },
-            secondBannerSection: {
-              bannerImage: null,
-              title: "",
-              description: ""
-            }
-          }
-        });
+        alert(`Page ${formData._id ? "updated" : "created"} successfully!`);
+
+        // Always update formData with the response to get latest data
+        setFormData(data);
       } else {
-        alert("Failed to update page. Please try again.");
+        const errorData = await res.json();
+        console.error("Server error:", errorData);
+        alert(`Failed to save page: ${errorData.message}`);
       }
     } catch (err) {
       console.error("Error:", err);
-      alert("Error updating page. Please try again.");
+      alert("Error saving page. Please try again.");
     }
   };
 

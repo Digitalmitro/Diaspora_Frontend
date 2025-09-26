@@ -1,9 +1,24 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import banner from "../../../../public/about.png";
 import image from "../../../../public/aboutImage.png";
 
 function About() {
+  const [aboutData, setAboutData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/cms/about`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setAboutData(data);
+        console.log(data);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <main className="space-y-6">
       {/* 🔹 Banner Section */}
@@ -14,7 +29,14 @@ function About() {
         <div className="absolute inset-0 bg-black/30 z-10 flex flex-col items-center justify-center text-white">
           <h1 className="text-3xl md:text-6xl font-bold mb-2">About Us</h1>
         </div>
-        <Image src={banner} alt="About Us Banner" />
+        {aboutData?.banner && (
+          <Image
+            src={aboutData.banner}
+            alt="About Us Banner"
+            fill
+            className="object-cover"
+          />
+        )}
       </section>
 
       {/* 🔹 Main Content */}
@@ -28,28 +50,10 @@ function About() {
               id="about-heading"
               className="text-2xl md:text-4xl font-semibold mb-4 text-[#1F2E4A]"
             >
-              Our Perfect Platform
+              {aboutData ? aboutData.title : "Our Story"}
             </h2>
             <div className="font-medium text-lg leading-relaxed space-y-6">
-              <p>
-                Doctus omnesque duo ne, cu vel offendit erroribus. Laudem
-                hendrerit pro ex, cum postea delectus ad. Te pro feugiat
-                perpetua tractatos. Nam movet omnes id, usu te meis corpora.
-                Augue doming quaestio vix at. Sumo duis ea sed, ut vix euismod
-                lobortis prodesset, everti necessitatibus mei cu.
-              </p>
-              <p>
-                Nam ea eripuit assueverit, invenire delicatissimi ad pro, an
-                dicam principes duo. Paulo prodesset duo ad. Duo eu summo
-                verear. Natum gubergren definitionem id usu, graeco cetero ius
-                ut.
-              </p>
-              <p>
-                Unum postea sit an, iudico invenire expetenda ei sea, atqui
-                fierent sed ut. Ex pri numquam indoctum suavitate, sed id movet
-                mentitum consequat, cum et amet ipsum dolor. Unum postea sit an,
-                iudico invenire expetenda ei sea, atqui fierent sed ut
-              </p>
+              <p>{aboutData ? aboutData.content : "Loading..."}</p>
             </div>
           </div>
         </div>
@@ -61,7 +65,7 @@ function About() {
           <figure className="text-center">
             <div className="relative  w-full rounded-full p-6 border overflow-hidden">
               <Image
-                src={image}
+                src={aboutData?.secondaryImage || image}
                 alt="Our team working together"
                 // fill
                 height={400}

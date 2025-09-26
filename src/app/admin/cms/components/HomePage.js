@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage({
   formData,
@@ -8,6 +8,7 @@ export default function HomePage({
   setFormData,
   slug,
 }) {
+  const [submitting, setSubmitting] = useState(false);
   useEffect(() => {
     const fetchPage = async () => {
       try {
@@ -34,6 +35,16 @@ export default function HomePage({
 
     if (slug) fetchPage();
   }, [slug]);
+  const onSubmit = async () => {
+    setSubmitting(true);
+    try {
+      await handleSubmit(); // call your submit handler
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <div className="p-4 space-y-6">
       <h2 className="text-xl font-semibold">Home Page</h2>
@@ -159,7 +170,7 @@ export default function HomePage({
               type="text"
               placeholder="Change Title Here"
               className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
-              value={formData.home.secondBannerSection.title}
+              value={formData?.home?.secondBannerSection?.title||""}
               onChange={(e) => handleChange(e, "secondBannerSection", "title")}
             />
           </div>
@@ -169,7 +180,7 @@ export default function HomePage({
               placeholder="Change Description Here"
               className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
               rows="3"
-              value={formData.home.secondBannerSection.description}
+              value={formData?.home?.secondBannerSection?.description||""}
               onChange={(e) =>
                 handleChange(e, "secondBannerSection", "description")
               }
@@ -193,10 +204,17 @@ export default function HomePage({
       <div className="pt-4">
         <button
           type="button"
-          onClick={handleSubmit}
-          className="bg-yellow-500 px-6 py-2 rounded-lg font-medium text-white w-full sm:w-auto"
+          onClick={onSubmit}
+        disabled={submitting}
+         className={`px-6 py-2 rounded-lg font-medium w-full sm:w-auto 
+          ${
+            submitting
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-yellow-500 text-white"
+          }
+        `}
         >
-          Submit
+          {submitting ? "Submitting..." : "Submit"}
         </button>
       </div>
     </div>
