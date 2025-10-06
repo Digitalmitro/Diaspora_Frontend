@@ -152,7 +152,8 @@ function HomePage() {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-snug">
-            Find Your Career <br /> To Make A Better Life
+            Find Your Dream Job or Hire Top Talent <br /> Thousands of jobs from
+            verified companies
           </h1>
 
           <button className="bg-yellow-500 text-white px-6 py-3 uppercase font-semibold hover:bg-yellow-600">
