@@ -118,6 +118,30 @@ const featured = [
   },
 ];
 
+const testimonials = [
+  {
+    name: "Aarav Mehta",
+    role: "Software Engineer, Google",
+    feedback:
+      "Working with this team was an incredible experience. The project was delivered on time with exceptional quality.",
+    image: feature1,
+  },
+  {
+    name: "Ishita Sharma",
+    role: "Founder, BloomTech",
+    feedback:
+      "They understood our vision perfectly and built a product that exceeded expectations!",
+    image: feature2,
+  },
+  {
+    name: "Ravi Patel",
+    role: "CTO, FinEdge",
+    feedback:
+      "Professional, skilled, and super easy to work with. Highly recommend collaborating with them!",
+    image: feature3,
+  },
+];
+
 function HomePage() {
   return (
     <>
@@ -278,7 +302,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-6">
         <p className="text-gray-600 text-center  ">Here You Can See</p>
         <h2 className="text-3xl text-center  font-bold text-[#1F2E4A] mb-4">
           Featured Jobs
@@ -309,6 +333,45 @@ function HomePage() {
               <button className="bg-yellow-400 text-white text-sm font-semibold px-4 py-2  hover:bg-yellow-500 transition">
                 {job.applyButton}
               </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-gray-50 py-16 px-6  lg:px-24">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+            What Our Clients Say
+          </h2>
+          <p className="text-gray-500 mt-2">
+            Hear from people who’ve worked with us
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {testimonials.map((t, index) => (
+            <div
+              key={index}
+              className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition duration-300"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="relative w-14 h-14">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    fill
+                    className="rounded-full object-cover"
+                  />
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {t.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">{t.role}</p>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">“{t.feedback}”</p>
             </div>
           ))}
         </div>

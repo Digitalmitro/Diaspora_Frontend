@@ -2,7 +2,9 @@
 import Image from "next/image";
 import banner from "../../../public/employers.png";
 import back from "../../../public/back.png";
+import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
+import { FaLinkedin } from "react-icons/fa";
 import { useAuth } from "../context/authContext";
 import { useState } from "react";
 function SignUp() {
@@ -114,6 +116,36 @@ function SignUp() {
                   SIGN UP
                 </button>
               </form>
+              {/* OR Divider */}
+              <div className="flex items-center my-6">
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="mx-3 text-gray-500 font-medium">OR</span>
+                <div className="flex-grow border-t border-gray-300"></div>
+              </div>
+              {/* Social Buttons */}
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  // onClick={handleGoogleSignup}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-3 border border-gray-300 bg-white hover:bg-gray-100 rounded-lg transition"
+                >
+                  <FcGoogle size={28}/>
+                  <span className="font-medium text-gray-700">
+                    Sign up with Google
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  // onClick={handleLinkedinSignup}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-3 border border-gray-300 bg-white hover:bg-gray-100 rounded-lg transition"
+                >
+                  <FaLinkedin size={28} className="text-blue-800"/>
+                  <span className="font-medium text-gray-700">
+                    Sign up with LinkedIn
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

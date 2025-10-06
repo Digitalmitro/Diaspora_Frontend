@@ -56,6 +56,11 @@ function AdminSidebar() {
             </Link>
           </li>
           <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
+            <Link href="/admin/admin-settings" onClick={handleClose}>
+              Admin Settings
+            </Link>
+          </li>
+          <li className="cursor-pointer px-3 py-1 hover:bg-[#2E3A59] hover:text-white">
             <Link href="/admin/job-approval" onClick={handleClose}>
               Job Approval
             </Link>
