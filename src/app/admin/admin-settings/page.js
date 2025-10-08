@@ -7,7 +7,7 @@ export default function AdminSettings() {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
 
   const [admins, setAdmins] = useState([
-    { name: "Jenny Wilson", email: "jenny@example.com", role: "Owner" },
+    { name: "Jenny Wilson", email: "jenny@example.com", role: "manager" },
     { name: "Darrell Steward", email: "darrell@example.com", role: "Admin" },
     { name: "Kathryn Murphy", email: "kathryn@example.com", role: "Admin" },
   ]);
@@ -18,12 +18,12 @@ export default function AdminSettings() {
     role: "Custom",
   });
 
-  const roles = ["Owner", "Admin", "Custom"];
+  const roles = ["viewer", "Admin", "manager","support"];
 
   const addAdmin = () => {
     if (!newAdmin.name.trim() || !newAdmin.email.trim()) return;
     setAdmins([...admins, newAdmin]);
-    setNewAdmin({ name: "", email: "", role: "Custom" });
+    setNewAdmin({ name: "", email: "", role: "viewer" });
   };
 
   const handleRoleChange = (index, newRole) => {
@@ -96,7 +96,7 @@ export default function AdminSettings() {
             onClick={addAdmin}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
           >
-            <FiPlus /> Add admin
+            <FiPlus /> Add 
           </button>
         </div>
 
