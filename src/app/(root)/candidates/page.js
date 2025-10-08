@@ -2,6 +2,7 @@
 import Image from "next/image";
 import banner from "../../../../public/candidateBanner.png";
 import candidate from "../../../../public/candidate.png";
+import Link from "next/link";
 
 const candidatesData = {
   candidates: [
@@ -114,13 +115,13 @@ function Candidates() {
                     <p>{candidate.date}</p>
                     <p>Exp – {candidate.experience}</p>
                   </div>
-                  <a
-                    href={candidate.resumeUrl}
+                  <Link
+                    href={"/candidates/cv"}
                     className="text-red-500 text-sm font-medium"
-                    target="_blank"
+                    
                   >
                     View Resume
-                  </a>
+                  </Link>
                 </div>
               </div>
 

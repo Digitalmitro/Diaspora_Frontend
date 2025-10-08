@@ -1,32 +1,39 @@
 "use client";
 import React, { useState } from "react";
-import { FiTrash2, FiMoreVertical, FiPlus } from "react-icons/fi"; 
-import { Switch } from "@headlessui/react"; 
+import { FiTrash2, FiMoreVertical, FiPlus } from "react-icons/fi";
+import { Switch } from "@headlessui/react";
+
 export default function AdminSettings() {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
 
   const [admins, setAdmins] = useState([
-    { name: "Jenny Wilson", role: "Owner" },
-    { name: "Darrell Steward", role: "Admin" },
-    { name: "Kathryn Murphy", role: "Admin" },
+    { name: "Jenny Wilson", email: "jenny@example.com", role: "Owner" },
+    { name: "Darrell Steward", email: "darrell@example.com", role: "Admin" },
+    { name: "Kathryn Murphy", email: "kathryn@example.com", role: "Admin" },
   ]);
 
-  const [newAdmin, setNewAdmin] = useState("");
+  const [newAdmin, setNewAdmin] = useState({
+    name: "",
+    email: "",
+    role: "Custom",
+  });
 
-  const roles = [
-    { role: "Owner", dashboard: true, users: true, content: true, settings: true },
-    { role: "Admin", dashboard: true, users: true, content: true, settings: true },
-    { role: "Custom", dashboard: false, users: false, content: false, settings: false },
-  ];
+  const roles = ["Owner", "Admin", "Custom"];
 
   const addAdmin = () => {
-    if (!newAdmin.trim()) return;
-    setAdmins([...admins, { name: newAdmin, role: "Custom" }]);
-    setNewAdmin("");
+    if (!newAdmin.name.trim() || !newAdmin.email.trim()) return;
+    setAdmins([...admins, newAdmin]);
+    setNewAdmin({ name: "", email: "", role: "Custom" });
+  };
+
+  const handleRoleChange = (index, newRole) => {
+    const updated = [...admins];
+    updated[index].role = newRole;
+    setAdmins(updated);
   };
 
   return (
-    <section className="bg-white p-8 rounded-2xl shadow-md max-w-5xl mx-auto ">
+    <section className="bg-white p-8 rounded-2xl shadow-md max-w-5xl mx-auto">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Admin Settings</h2>
 
       {/* Global Controls */}
@@ -47,21 +54,44 @@ export default function AdminSettings() {
               } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
-          <span className="text-gray-800 font-medium ml-3">Maintenance Mode</span>
+          <span className="text-gray-800 font-medium ml-3">
+            Maintenance Mode
+          </span>
         </div>
       </div>
 
       {/* Admin Management */}
       <div className="mb-10">
         <h3 className="text-gray-700 font-semibold mb-4">ADMIN MANAGEMENT</h3>
-        <div className="flex items-center gap-3 mb-6">
+
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
           <input
             type="text"
-            value={newAdmin}
-            onChange={(e) => setNewAdmin(e.target.value)}
-            placeholder="Search user..."
-            className="border px-4 py-2 rounded-lg w-full max-w-xs focus:outline-none focus:ring focus:ring-blue-300"
+            value={newAdmin.name}
+            onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
+            placeholder="Admin name"
+            className="border px-4 py-2 rounded-lg w-full sm:max-w-xs focus:outline-none focus:ring focus:ring-blue-300"
           />
+          <input
+            type="email"
+            value={newAdmin.email}
+            onChange={(e) =>
+              setNewAdmin({ ...newAdmin, email: e.target.value })
+            }
+            placeholder="Email"
+            className="border px-4 py-2 rounded-lg w-full sm:max-w-xs focus:outline-none focus:ring focus:ring-blue-300"
+          />
+          <select
+            value={newAdmin.role}
+            onChange={(e) => setNewAdmin({ ...newAdmin, role: e.target.value })}
+            className="border px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            {roles.map((role, i) => (
+              <option key={i} value={role}>
+                {role}
+              </option>
+            ))}
+          </select>
           <button
             onClick={addAdmin}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
@@ -74,15 +104,29 @@ export default function AdminSettings() {
           <thead>
             <tr className="text-left text-gray-600 border-b">
               <th className="py-2">Name</th>
+              <th className="py-2">Email</th>
               <th className="py-2">Role</th>
-              <th className="py-2"></th>
+              <th className="py-2 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {admins.map((admin, index) => (
               <tr key={index} className="border-b text-gray-800">
                 <td className="py-2">{admin.name}</td>
-                <td className="py-2">{admin.role}</td>
+                <td className="py-2">{admin.email}</td>
+                <td className="py-2">
+                  <select
+                    value={admin.role}
+                    onChange={(e) => handleRoleChange(index, e.target.value)}
+                    className="border rounded-md px-2 py-1 focus:outline-none focus:ring focus:ring-blue-300"
+                  >
+                    {roles.map((role, i) => (
+                      <option key={i} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+                </td>
                 <td className="py-2 text-right flex items-center gap-3 justify-end">
                   <button className="text-gray-500 hover:text-blue-600">
                     <FiMoreVertical />
@@ -104,7 +148,9 @@ export default function AdminSettings() {
 
       {/* Role Permissions */}
       <div>
-        <h3 className="text-gray-700 font-semibold mb-4">ROLE-BASED PERMISSIONS</h3>
+        <h3 className="text-gray-700 font-semibold mb-4">
+          ROLE-BASED PERMISSIONS
+        </h3>
         <table className="w-full border-collapse text-center">
           <thead>
             <tr className="text-gray-600 border-b">
@@ -116,16 +162,43 @@ export default function AdminSettings() {
             </tr>
           </thead>
           <tbody>
-            {roles.map((r, index) => (
+            {[
+              {
+                role: "manager",
+                dashboard: true,
+                users: true,
+                content: true,
+                settings: true,
+              },
+              {
+                role: "Admin",
+                dashboard: true,
+                users: true,
+                content: true,
+                settings: true,
+              },
+              {
+                role: "support",
+                dashboard: false,
+                users: false,
+                content: false,
+                settings: false,
+              },
+              {
+                role: "viewer",
+                dashboard: false,
+                users: false,
+                content: false,
+                settings: false,
+              },
+            ].map((r, index) => (
               <tr key={index} className="border-b text-gray-800">
                 <td className="py-2 text-left">{r.role}</td>
-                {[r.dashboard, r.users, r.content, r.settings].map(
-                  (val, i) => (
-                    <td key={i} className="py-2">
-                      <input type="checkbox" checked={val} readOnly />
-                    </td>
-                  )
-                )}
+                {[r.dashboard, r.users, r.content, r.settings].map((val, i) => (
+                  <td key={i} className="py-2">
+                    <input type="checkbox" checked={val} readOnly />
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>

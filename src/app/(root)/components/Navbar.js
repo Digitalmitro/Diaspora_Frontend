@@ -4,23 +4,33 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaFlagUsa, FaFlag } from "react-icons/fa";
 import { GiIndiaGate } from "react-icons/gi";
+import { SiChinaeasternairlines } from "react-icons/si";
 import { usePathname, useRouter } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import logo from "../../../../public/logo.png.png";
 import { useAuth } from "@/app/context/authContext";
-const languages = [
-  {
-    code: "en",
-    name: "English",
-    icon: <FaFlagUsa className="text-blue-600" />,
-  },
-  {
-    code: "hi",
-    name: "हिन्दी",
-    icon: <GiIndiaGate className="text-orange-500" />,
-  },
-  { code: "es", name: "Español", icon: <FaFlag className="text-red-500" /> },
-];
+  const languages = [
+    {
+      code: "en",
+      name: "English",
+      icon: <FaFlagUsa className="text-blue-600 text-lg" />,
+    },
+    {
+      code: "hi",
+      name: "हिन्दी",
+      icon: <GiIndiaGate className="text-orange-500 text-lg" />,
+    },
+    {
+      code: "es",
+      name: "nombre",
+      icon: <FaFlag className="text-red-500 text-lg" />,
+    },
+    {
+      code: "zh",
+      name: "中文中文",
+      icon: <SiChinaeasternairlines className="text-red-600 text-lg" />,
+    },
+  ];
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -123,15 +133,15 @@ function Navbar() {
               {/* If NO user → show Login / Signup */}
               {!user && (
                 <button
-                    className="px-4 py-2 font-semibold text-sm bg-[#F4B400] text-white rounded"
-                    onClick={() => router.push("/employers")}
-                  >
-                    LOGIN / SIGNUP
-                  </button>
+                  className="px-4 py-2 font-semibold text-sm bg-[#F4B400] text-white rounded"
+                  onClick={() => router.push("/employers")}
+                >
+                  LOGIN / SIGNUP
+                </button>
               )}
 
               {/* If user exists but is "admin" or "user" → show nothing */}
-              {user?.role=="user" && null}
+              {user?.role == "user" && null}
             </div>
           </div>
 
