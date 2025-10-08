@@ -1,3 +1,5 @@
+"use client";
+import { useRouter } from "next/navigation";
 import banner from "../../../public/homeBanner.png";
 import blog1 from "../../../public/blog1.png";
 import blog2 from "../../../public/blog2.png";
@@ -143,13 +145,12 @@ const testimonials = [
 ];
 
 function HomePage() {
+  const router = useRouter();
   return (
     <>
       <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
         <Image src={banner} alt="Home Banner" layout="fill" objectFit="cover" />
-
         <div className="absolute inset-0 bg-opacity-50"></div>
-
         <div className="relative z-10 w-full max-w-4xl text-center px-4">
           <div className="bg-white shadow-md  flex items-center p-2 mb-6">
             <div className="relative flex-1">
@@ -170,17 +171,27 @@ function HomePage() {
               />
             </div>
 
-            <button className="bg-yellow-500 text-white px-6 py-2 uppercase text-sm font-medium tracking-wide hover:bg-yellow-600">
+            <button
+              onClick={() => router.push("/job")}
+              className="bg-yellow-500 text-white px-6 py-2 uppercase text-sm font-medium tracking-wide hover:bg-yellow-600"
+            >
               Find Jobs
             </button>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-snug">
-            Find Your Dream Job or Hire Top Talent <br /> Thousands of jobs from
-            verified companies
-          </h1>
+          <div className="text-center text-white mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold leading-snug">
+              Find Your Dream Job or Hire Top Talent
+            </h1>
+            <h4 className="text-lg md:text-xl font-medium mt-2 opacity-90">
+              Thousands of jobs from verified companies
+            </h4>
+          </div>
 
-          <button className="bg-yellow-500 text-white px-6 py-3 uppercase font-semibold hover:bg-yellow-600">
+          <button
+            onClick={() => router.push("/job")}
+            className="bg-yellow-500 text-white px-6 py-3 uppercase font-semibold hover:bg-yellow-600"
+          >
             Find Jobs
           </button>
         </div>

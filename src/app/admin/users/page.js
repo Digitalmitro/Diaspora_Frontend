@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 
 function UserManagement() {
   const [search, setSearch] = useState("");
+  const [activeFilter, setActiveFilter] = useState("");
 
   const users = [
     { name: "Kim", email: "kim@gmail.com", role: "Employer" },
@@ -20,10 +21,18 @@ function UserManagement() {
       u.role.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Apply additional filtering based on active button
+  const finalUsers = activeFilter
+    ? filteredUsers.filter((user) => user.role === activeFilter)
+    : filteredUsers;
+
   return (
     <div className="p-6">
       {/* Search bar */}
-      <div className="mb-4">
+      <div className="mb-4"></div>
+
+      {/* Filter Buttons */}
+      <div className="flex flex-col sm:flex-row justify-between w-full gap-4 mb-4">
         <input
           type="text"
           placeholder="Search by name, email or role..."
@@ -31,11 +40,47 @@ function UserManagement() {
           onChange={(e) => setSearch(e.target.value)}
           className="w-full sm:w-1/3 p-2 border rounded-md outline-none"
         />
+        <div className="flex justify-start sm:justify-evenly gap-2 sm:gap-4">
+          <button
+            onClick={() =>
+              setActiveFilter(activeFilter === "Employer" ? "" : "Employer")
+            }
+            className={`px-3 sm:px-4 py-2 rounded text-sm ${
+              activeFilter === "Employer"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            Employer
+          </button>
+          <button
+            onClick={() =>
+              setActiveFilter(activeFilter === "Employee" ? "" : "Employee")
+            }
+            className={`px-3 sm:px-4 py-2 rounded text-sm ${
+              activeFilter === "Employee"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            Employee
+          </button>
+          <button
+            onClick={() => setActiveFilter("")}
+            className={`px-3 sm:px-4 py-2 rounded text-sm ${
+              activeFilter === ""
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            All
+          </button>
+        </div>
       </div>
 
       {/* Table / Cards */}
       <div className="space-y-3">
-        {filteredUsers.map((user, index) => (
+        {finalUsers.map((user, index) => (
           <div
             key={index}
             className="flex flex-col sm:flex-row sm:justify-between sm:items-center border rounded-md p-3 bg-white"

@@ -74,6 +74,16 @@ export default function HomePage({
               onChange={(e) => handleChange(e, "bannerSection", "title")}
             />
           </div>
+          <div>
+            <p className="mb-2 font-medium">Change the Sub Title Here</p>
+            <input
+              type="text"
+              placeholder="Change Sub Title Here"
+              className="w-full p-3 border rounded-lg bg-[#0B2447] text-white"
+              // value={formData?.home?.bannerSection?.subTitle}
+              // onChange={(e) => handleChange(e, "bannerSection", "subTitle")}
+            />
+          </div>
         </div>
       </div>
 
